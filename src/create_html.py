@@ -1,11 +1,12 @@
 def generate_html(json_data):
     html = ""
     for element in json_data["elements"]:
-        if element["etype"] == "textbox":
+        isEtype = "etype" in element
+        if isEtype and element["etype"] == "textbox":
             html += generate_textbox(element)
-        elif element["etype"] == "checkbox":
+        elif isEtype and element["etype"] == "checkbox":
             html += generate_checkbox(element)
-        elif element["etype"] == "selectlist":
+        elif isEtype and element["etype"] == "selectlist":
             html += generate_select(element)
 
     finished_html =  """
@@ -44,15 +45,15 @@ def generate_textbox(element):
         <label>
             {}
         </label>
-        <input  name="{}"
-                type="{}" 
+        <input  type="{}"
+                name="{}"
                 style="width: {}em;" 
                 {}="{}" 
                 {}
         /><br/><br/>
     """.format(element["caption"]
-                ,element["ename"]
                 ,datatype
+                ,element["ename"]
                 ,element["size"]
                 ,maxAttrName
                 ,maxlength
@@ -61,7 +62,27 @@ def generate_textbox(element):
     return textbox_html
 
 def generate_checkbox(element):
-    return "<input type='checkbox'/>"
+
+    checkbox_html = """ <label>{}</label><br/><br/>""".format(element["caption"])
+    datatype = "checkbox"
+    for groups in element["group"]:
+        checked = ""
+        if "checked" in groups and groups["checked"] == "checked":
+            checked = "checked"
+
+    
+
+        checkbox_html += """
+            <input type={} value={} {}
+            />
+            <label>
+            {}
+            </label><br/><br/>
+            """.format(datatype
+                    ,groups["value"]
+                    ,checked
+                    ,groups["caption"])
+    return checkbox_html
 
 def generate_select(element):
     return "<input type='select'/>"
