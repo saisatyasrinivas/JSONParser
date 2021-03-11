@@ -8,6 +8,7 @@ def generate_html(json_data):
             html += generate_checkbox(element)
         elif isEtype and element["etype"] == "selectlist":
             html += generate_select(element)
+        
 
     finished_html =  """
         <html>
@@ -85,4 +86,17 @@ def generate_checkbox(element):
     return checkbox_html
 
 def generate_select(element):
-    return "<input type='select'/>"
+    slabel_html = """ <label>{}</label><br/><br/>""".format(element["caption"])
+    select_html = ""
+    for groups in element["group"]:
+        
+
+        select_html  += """
+        <option value="{}">{}</option>
+        """.format(groups["value"]
+                   ,groups["caption"])
+
+    final_select = """{}<select>{}</select>""".format(slabel_html,select_html)
+    return final_select
+
+def 
