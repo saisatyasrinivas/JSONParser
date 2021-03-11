@@ -1,4 +1,4 @@
-def generate_html(json_data):
+def generate_html(json_data, filename):
     html = ""
     for element in json_data["elements"]:
         isEtype = "etype" in element
@@ -10,8 +10,8 @@ def generate_html(json_data):
             html += generate_select(element)
         elif isEtype and element["etype"] == "radiobutton":
             html += generate_radio(element)
-        # elif isEtype and element["etype"] == "multiselectlist":
-        #     html += generate_multi(element)
+        elif isEtype and element["etype"] == "multiselectlist":
+            html += generate_multi(element)
         elif isEtype and element["etype"] == "submit":
             html += generate_submit_reset(element, "submit")
         elif isEtype and element["etype"] == "reset":
@@ -27,9 +27,10 @@ def generate_html(json_data):
             </body>
         </html>
     """.format(html)
-    print(finished_html)
-    # How will you fill the data? Traverse the elements
-    # and depending on the etype get the appropriate html string
+    
+    with open(filename, "w") as final_html:
+        final_html.write(finished_html)
+
 
 def generate_textbox(element):
     """
@@ -126,3 +127,14 @@ def generate_submit_reset(element, input_type):
     <input type="{}" name="{}" value="{}"/>
     """.format(input_type, element["ename"], element["caption"])
     return submit_html
+
+def generate_multi(element):
+    mlabel_html = """ <label>{}</label>""".format(element["caption"])
+    multi_html = ""
+    for groups in element["group"]:
+
+        multi_html += """
+        <option value="{}">{}</option><br/>
+        """.format(groups["value"], groups["caption"])
+    final_multiselect = """ {}<select name="{}" size= "{}" multiple>{}</select><br/><br/> """.format(mlabel_html,element["ename"],element["size"],multi_html)
+    return final_multiselect

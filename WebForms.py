@@ -17,7 +17,7 @@ def main():
         json_data = json.load(f)
     
     # Step 1: Create the HTML
-    create_html.generate_html(json_data)
+    create_html.generate_html(json_data, "interests.html")
     # Step 2: Javascript 2 validations and 2 functions (submitdata,Displaydata)
     # Step 3: MYSQL Script (creating the table)
     # Step 4: Restful API ( 2 endpoints)
