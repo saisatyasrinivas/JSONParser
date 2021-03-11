@@ -21,6 +21,7 @@ def generate_html(json_data):
         <html>
             <body>
                 <form>
+                <h1>Student Registration Page</h1>
                     {}
                 </form>
             </body>
@@ -81,12 +82,13 @@ def generate_checkbox(element):
     
 
         checkbox_html += """
-            <input type={} value={} {}
+            <input type={} name="{}" value={} {}
             />
             <label>
             {}
             </label><br/><br/>
             """.format(datatype
+                    ,element["ename"]
                     ,groups["value"]
                     ,checked
                     ,groups["caption"])
@@ -103,7 +105,7 @@ def generate_select(element):
         """.format(groups["value"]
                    ,groups["caption"])
 
-    final_select = """{}<select>{}</select><br/><br/>""".format(slabel_html,select_html)
+    final_select = """{}<select name="{}">{}</select><br/><br/>""".format(slabel_html,element["ename"],select_html)
     return final_select
 
 def generate_radio(element):
@@ -112,15 +114,15 @@ def generate_radio(element):
     for groups in element["group"]:
 
         radio_html += """
-        <input type="radio" value="{}"/>
+        <input type="radio" name="{}" value="{}"/>
         <label>{}</label><br/>
-        """.format(groups["value"], groups["caption"])
+        """.format(element["ename"],groups["value"], groups["caption"])
     final_radio = """ {}<br/>{}<br/>""".format(label_html,radio_html)
     return final_radio
 
 def generate_submit_reset(element, input_type):
 
     submit_html = """ 
-    <input type="{}" value="{}"/>
-    """.format(input_type, element["caption"])
+    <input type="{}" name="{}" value="{}"/>
+    """.format(input_type, element["ename"], element["caption"])
     return submit_html
