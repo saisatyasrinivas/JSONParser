@@ -8,7 +8,14 @@ def generate_html(json_data):
             html += generate_checkbox(element)
         elif isEtype and element["etype"] == "selectlist":
             html += generate_select(element)
-        
+        elif isEtype and element["etype"] == "radiobutton":
+            html += generate_radio(element)
+        # elif isEtype and element["etype"] == "multiselectlist":
+        #     html += generate_multi(element)
+        # elif isEtype and element["etype"] == "submit":
+        #     html += generate_submit(element)
+        # elif isEtype and element["etype"] == "reset":
+        #     html += generate_reset(element)
 
     finished_html =  """
         <html>
@@ -96,7 +103,17 @@ def generate_select(element):
         """.format(groups["value"]
                    ,groups["caption"])
 
-    final_select = """{}<select>{}</select>""".format(slabel_html,select_html)
+    final_select = """{}<select>{}</select><br/><br/>""".format(slabel_html,select_html)
     return final_select
 
-def 
+def generate_radio(element):
+    label_html = """ <label>{}</label>""".format(element["caption"])
+    radio_html = ""
+    for groups in element["group"]:
+
+        radio_html += """
+        <input type="radio" value="{}"/>
+        <label>{}</label><br/>
+        """.format(groups["value"], groups["caption"])
+    final_radio = """ {}<br/>{}""".format(label_html,radio_html)
+    return final_radio
