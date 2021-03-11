@@ -12,10 +12,10 @@ def generate_html(json_data):
             html += generate_radio(element)
         # elif isEtype and element["etype"] == "multiselectlist":
         #     html += generate_multi(element)
-        # elif isEtype and element["etype"] == "submit":
-        #     html += generate_submit(element)
-        # elif isEtype and element["etype"] == "reset":
-        #     html += generate_reset(element)
+        elif isEtype and element["etype"] == "submit":
+            html += generate_submit_reset(element, "submit")
+        elif isEtype and element["etype"] == "reset":
+            html += generate_submit_reset(element, "reset")
 
     finished_html =  """
         <html>
@@ -115,5 +115,12 @@ def generate_radio(element):
         <input type="radio" value="{}"/>
         <label>{}</label><br/>
         """.format(groups["value"], groups["caption"])
-    final_radio = """ {}<br/>{}""".format(label_html,radio_html)
+    final_radio = """ {}<br/>{}<br/>""".format(label_html,radio_html)
     return final_radio
+
+def generate_submit_reset(element, input_type):
+
+    submit_html = """ 
+    <input type="{}" value="{}"/>
+    """.format(input_type, element["caption"])
+    return submit_html
