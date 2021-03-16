@@ -1,0 +1,108 @@
+{
+    "id": "1",
+    "name": "student",
+    "caption": "Class Registration Page",
+    "backendURL": "http://localhost:5000/webforms/",
+    "backendHost": "localhost",
+    "backendPort": "5000",
+    "mysqlUserID": "raj",
+    "mysqlPWD": "r123",
+    "mysqlDB": "raj",
+    "elements": [
+      {
+        "etype": "textbox",
+        "ename": "sno",
+        "datatype": "integer",
+        "key": "key",
+        "caption": "Student Number:",
+        "size": "9",
+        "maxlength": "9",
+        "required": "true"
+      },
+      {
+        "etype": "textbox",
+        "ename": "firstname",
+        "datatype": "string",
+        "caption": "First Name:",
+        "size": "20",
+        "maxlength": "50",
+        "required": "true"
+      },
+      {
+        "etype": "textbox",
+        "ename": "lastname",
+        "datatype": "string",
+        "caption": "Last Name:",
+        "size": "20",
+        "maxlength": "50",
+        "required": "true"
+      },
+      {
+        "etype": "checkbox",
+        "ename": "courses",
+        "datatype": "string",
+        "caption": "Check classes you are enrolled in:",
+        "group": [
+          {
+            "checked": "checked",
+            "value": "2310",
+            "caption": "CSc 2310"
+          },
+          {
+            "value": "4710",
+            "caption": "CSc 4710"
+          },
+          {
+            "value": "8710",
+            "caption": "CSc 8710"
+          }
+        ]
+      },
+      {
+        "etype": "selectlist",
+        "ename": "status",
+        "datatype": "string",
+        "caption": "What is your residence status?",
+        "group": [
+          {
+            "value": "on",
+            "caption": "On-Campus"
+          },
+          {
+            "value": "off",
+            "caption": "Off-Campus"
+          }
+        ]
+      },
+      {
+        "etype": "radiobutton",
+        "ename": "semester",
+        "datatype": "string",
+        "caption": "Choose a semester:",
+        "group": [
+          {
+            "value": "spring",
+            "caption": "Spring"
+          },
+          {
+            "value": "summer",
+            "caption": "Summer"
+          },
+          {
+            "value": "fall",
+            "caption": "Fall"
+          }
+        ]
+      },
+      {
+        "etype": "submit",
+        "ename": "submit",
+        "caption": "Send to database"
+      },
+      {
+        "etype": "reset",
+        "ename": "reset",
+        "caption": "Clear all fields"
+      }
+    ]
+  }

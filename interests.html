@@ -1,0 +1,75 @@
+
+        <html>
+            <body>
+                <form>
+                <h1>Student Registration Page</h1>
+                    
+        <label>
+            Student Number:
+        </label>
+        <input  type="number"
+                name="sno"
+                style="width: 9em;" 
+                max="2" 
+                required
+        /><br/><br/>
+    
+        <label>
+            First Name:
+        </label>
+        <input  type="text"
+                name="firstname"
+                style="width: 20em;" 
+                maxlength="50" 
+                required
+        /><br/><br/>
+    
+        <label>
+            Last Name:
+        </label>
+        <input  type="text"
+                name="lastname"
+                style="width: 20em;" 
+                maxlength="50" 
+                required
+        /><br/><br/>
+     <label>Check classes you are enrolled in:</label><br/><br/>
+            <input type=checkbox name="courses" value=2310 checked
+            />
+            <label>
+            CSc 2310
+            </label><br/><br/>
+            
+            <input type=checkbox name="courses" value=4710 
+            />
+            <label>
+            CSc 4710
+            </label><br/><br/>
+            
+            <input type=checkbox name="courses" value=8710 
+            />
+            <label>
+            CSc 8710
+            </label><br/><br/>
+             <label>What is your residence status?</label><br/><br/><select name="status">
+        <option value="on">On-Campus</option>
+        
+        <option value="off">Off-Campus</option>
+        </select><br/><br/>  <label>Choose a semester:</label><br/>
+        <input type="radio" name="semester" value="spring"/>
+        <label>Spring</label><br/>
+        
+        <input type="radio" name="semester" value="summer"/>
+        <label>Summer</label><br/>
+        
+        <input type="radio" name="semester" value="fall"/>
+        <label>Fall</label><br/>
+        <br/> 
+    <input type="submit" name="submit" value="Send to database"/>
+     
+    <input type="reset" name="reset" value="Clear all fields"/>
+    
+                </form>
+            </body>
+        </html>
+    

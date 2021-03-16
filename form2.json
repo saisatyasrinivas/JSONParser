@@ -1,0 +1,106 @@
+{
+    "id": "2",
+    "name": "interests",
+    "caption": "Student Interests Page",
+    "backendURL": "http://localhost:5000/webforms/",
+    "backendHost": "localhost",
+    "backendPort": "5000",
+    "mysqlUserID": "raj",
+    "mysqlPWD": "r123",
+    "mysqlDB": "raj",
+    "elements": [
+      {
+        "etype": "textbox",
+        "ename": "sid",
+        "datatype": "integer",
+        "key": "key",
+        "caption": "Student ID:",
+        "size": "4",
+        "maxlength": "4",
+        "required": "true"
+      },
+      {
+        "etype": "textbox",
+        "ename": "sname",
+        "datatype": "string",
+        "caption": "Student Name:",
+        "size": "20",
+        "maxlength": "50",
+        "required": "true"
+      },
+      {
+        "etype": "checkbox",
+        "ename": "pls",
+        "datatype": "string",
+        "caption": "Check programming languages you are interested in.",
+        "group": [
+          {
+            "value": "java",
+            "caption": "Java"
+          },
+          {
+            "value": "cplusplus",
+            "caption": "C++"
+          },
+          {
+            "value": "pascal",
+            "caption": "Pascal"
+          }
+        ]
+      },
+      {
+        "etype": "selectlist",
+        "ename": "degree",
+        "datatype": "string",
+        "caption": "What is your degree?",
+        "group": [
+          {
+            "value": "ms",
+            "caption": "M.S."
+          },
+          {
+            "value": "phd",
+            "caption": "Ph.D."
+          }
+        ]
+      },
+      {
+        "etype": "multiselectlist",
+        "ename": "hobbies",
+        "datatype": "string",
+        "size": "3",
+        "caption": "What are your hobbies (choose as many as relevant)?",
+        "group": [
+          {
+            "value": "stamp_collection",
+            "caption": "Stamp Collection"
+          },
+          {
+            "value": "coin_collection",
+            "caption": "Coin Collection"
+          },
+          {
+            "value": "reading",
+            "caption": "Reading"
+          },
+          {
+            "value": "crossword_puzzles",
+            "caption": "Crossword Puzzles"
+          },
+          {
+            "value": "painting",
+            "caption": "Painting"
+          },
+          {
+            "value": "screen_printing",
+            "caption": "Screen Printing"
+          }
+        ]
+      },
+      {
+        "etype": "submit",
+        "ename": "submit",
+        "caption": "Submit Data"
+      }
+    ]
+  }
