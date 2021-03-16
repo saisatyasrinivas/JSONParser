@@ -21,6 +21,8 @@ def main():
     # Step 2: Javascript 2 validations and 2 functions (submitdata,Displaydata)
     # Step 3: MYSQL Script (creating the table)
     # Step 4: Restful API ( 2 endpoints)
+    # Step 5: Create HTML from displaying the data
+        # Write the json and send to generate_html function  and file name
 
 
 main()

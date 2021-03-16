@@ -21,12 +21,12 @@ def generate_html(json_data, filename):
         <html>
             <body>
                 <form>
-                <h1>Student Registration Page</h1>
+                <h1>{}</h1>
                     {}
                 </form>
             </body>
         </html>
-    """.format(html)
+    """.format(json_data["caption"],html)
     
     with open(filename, "w") as final_html:
         final_html.write(finished_html)
