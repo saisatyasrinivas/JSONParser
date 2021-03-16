@@ -38,7 +38,7 @@
         "required": "true"
       },
       {
-        "etype": "checkbox",
+        "etype":"checkbox",
         "ename": "courses",
         "datatype": "string",
         "caption": "Check classes you are enrolled in:",
