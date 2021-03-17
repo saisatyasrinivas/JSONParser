@@ -2,6 +2,7 @@ import sys
 import os
 import json
 from src import create_html
+from src import create_js
 
 def main():
     if len(sys.argv) != 2:
@@ -17,8 +18,9 @@ def main():
         json_data = json.load(f)
     
     # Step 1: Create the HTML
-    create_html.generate_html(json_data, "interests.html")
+    create_html.generate_html(json_data)
     # Step 2: Javascript 2 validations and 2 functions (submitdata,Displaydata)
+    create_js.generate_jscript(json_data)
     # Step 3: MYSQL Script (creating the table)
     # Step 4: Restful API ( 2 endpoints)
     # Step 5: Create HTML from displaying the data
