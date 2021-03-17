@@ -37,13 +37,7 @@ def generate_textbox(element):
         TO-DO: Debug "max" when datatype is integer
     """
     datatype = "text"
-    maxAttrName = "maxlength"
     maxlength = element["maxlength"]
-
-    if element["datatype"] == "integer":
-        datatype = "number"
-        maxAttrName = "max" 
-        maxlength = "{}".format((10^int(maxlength)) - 1)
 
     required = ""
     
@@ -56,16 +50,17 @@ def generate_textbox(element):
             {}
         </label>
         <input  type="{}"
+                id = "{}"
                 name="{}"
-                style="width: {}em;" 
-                {}="{}" 
+                size="{}" 
+                maxlength="{}" 
                 {}
         /><br/><br/>
     """.format(element["caption"]
                 ,datatype
                 ,element["ename"]
+                ,element["ename"]
                 ,element["size"]
-                ,maxAttrName
                 ,maxlength
                 ,required)
 
@@ -83,13 +78,14 @@ def generate_checkbox(element):
     
 
         checkbox_html += """
-            <input type={} name="{}" value={} {}
+            <input type={} name="{}" id="{}" value={} {}
             />
             <label>
             {}
             </label><br/><br/>
             """.format(datatype
                     ,element["ename"]
+                    ,remove(groups["caption"])
                     ,groups["value"]
                     ,checked
                     ,groups["caption"])
@@ -106,7 +102,7 @@ def generate_select(element):
         """.format(groups["value"]
                    ,groups["caption"])
 
-    final_select = """{}<select name="{}">{}</select><br/><br/>""".format(slabel_html,element["ename"],select_html)
+    final_select = """{}<select name="{}" id="{}">{}</select><br/><br/>""".format(slabel_html,element["ename"],remove(groups["caption"]),select_html)
     return final_select
 
 def generate_radio(element):
@@ -115,17 +111,17 @@ def generate_radio(element):
     for groups in element["group"]:
 
         radio_html += """
-        <input type="radio" name="{}" value="{}"/>
+        <input type="radio" name="{}" id="{}" value="{}"/>
         <label>{}</label><br/>
-        """.format(element["ename"],groups["value"], groups["caption"])
+        """.format(element["ename"],groups["caption"],groups["value"], groups["caption"])
     final_radio = """ {}<br/>{}<br/>""".format(label_html,radio_html)
     return final_radio
 
 def generate_submit_reset(element, input_type):
 
     submit_html = """ 
-    <input type="{}" name="{}" value="{}"/>
-    """.format(input_type, element["ename"], element["caption"])
+    <input type="{}" name="{}" id="{}"value="{}"/>
+    """.format(input_type, element["ename"], element["caption"], element["caption"])
     return submit_html
 
 def generate_multi(element):
@@ -136,5 +132,8 @@ def generate_multi(element):
         multi_html += """
         <option value="{}">{}</option><br/>
         """.format(groups["value"], groups["caption"])
-    final_multiselect = """ {}<select name="{}" size= "{}" multiple>{}</select><br/><br/> """.format(mlabel_html,element["ename"],element["size"],multi_html)
+    final_multiselect = """ {}<select name="{}" id="{}" size= "{}" multiple>{}</select><br/><br/> """.format(mlabel_html,element["ename"],element["ename"],element["size"],multi_html)
     return final_multiselect
+
+def remove(space):
+    return ''.join(e for e in space if e.isalnum())
