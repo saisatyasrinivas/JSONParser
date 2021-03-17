@@ -1,4 +1,4 @@
-def generate_html(json_data, filename):
+def generate_html(json_data):
     html = ""
     for element in json_data["elements"]:
         isEtype = "etype" in element
@@ -19,16 +19,21 @@ def generate_html(json_data, filename):
 
     finished_html =  """
         <html>
-            <body>
-                <form>
-                <h1>{}</h1>
-                    {}
-                </form>
-            </body>
+            <head>
+                <script defer src="./{}.js"></script>
+            </head>
+                <body>
+                    <form id="{}">
+                        <div>
+                            <h1>{}</h1>
+                            {}
+                        </div>
+                    </form>
+                </body>
         </html>
-    """.format(json_data["caption"],html)
+    """.format(json_data["name"],json_data["name"],json_data["caption"],html)
     
-    with open(filename, "w") as final_html:
+    with open('./{}.html'.format(json_data["name"]), "w") as final_html:
         final_html.write(finished_html)
 
 
@@ -55,14 +60,15 @@ def generate_textbox(element):
                 size="{}" 
                 maxlength="{}" 
                 {}
-        /><br/><br/>
+        /><div id="error_{}"></div><br/><br/>
     """.format(element["caption"]
                 ,datatype
                 ,element["ename"]
                 ,element["ename"]
                 ,element["size"]
                 ,maxlength
-                ,required)
+                ,required
+                ,element["ename"])
 
     return textbox_html
 
