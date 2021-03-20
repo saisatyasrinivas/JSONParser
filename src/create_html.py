@@ -22,21 +22,19 @@ def generate_html(json_data, display=False):
         form_id += '_display'
     
     finished_html =  """
-        <html>
-            <head>
-                <script defer src="./{}.js"></script>
-            </head>
-                <body>
-                    <div id="webform">
-                        <form id="{}">
-                            <div>
-                                <h1>{}</h1>
-                                {}
-                            </div>
-                        </form>
-                    </div>
-                </body>
-        </html>
+<html>
+    <head>
+        <script defer src="./{}.js"></script>
+    </head>
+    <body>
+        <div id="webform">
+            <form id="{}">
+                <h1>{}</h1>
+                {}
+            </form>
+        </div>
+    </body>
+</html>
     """.format(json_data["name"],form_id,json_data["caption"],html)
     
     with open('./{}.html'.format(form_id), "w") as final_html:
@@ -57,16 +55,17 @@ def generate_textbox(element):
 
 
     textbox_html  = """
-        <label>
-            {}
-        </label>
-        <input  type="{}"
-                id = "{}"
-                name="{}"
-                size="{}" 
-                maxlength="{}" 
-                {}
-        /><div id="error_{}"></div><br/><br/>
+                <label>
+                    {}
+                </label>
+                <input  type="{}"
+                        id = "{}"
+                        name="{}"
+                        size="{}" 
+                        maxlength="{}" 
+                        {}
+                />
+                <div id="error_{}"></div><br/><br/>
     """.format(element["caption"]
                 ,datatype
                 ,element["ename"]
@@ -80,21 +79,18 @@ def generate_textbox(element):
 
 def generate_checkbox(element):
 
-    checkbox_html = """ <label>{}</label><br/><br/>""".format(element["caption"])
+    checkbox_html = """ 
+                <label>{}</label><br/><br/>""".format(element["caption"])
     datatype = "checkbox"
     for groups in element["group"]:
         checked = ""
         if "checked" in groups and groups["checked"] == "checked":
             checked = "checked"
-
-    
-
         checkbox_html += """
-            <input type={} name="{}" id="{}" value={} {}
-            />
-            <label>
-            {}
-            </label><br/><br/>
+                <input type={} name="{}" id="{}" value={} {}/>
+                <label>
+                {}
+                </label><br/><br/>
             """.format(datatype
                     ,element["ename"]
                     ,remove(groups["caption"])
@@ -104,47 +100,54 @@ def generate_checkbox(element):
     return checkbox_html
 
 def generate_select(element):
-    slabel_html = """ <label>{}</label><br/><br/>""".format(element["caption"])
+    slabel_html = """<label>{}</label><br/><br/>""".format(element["caption"])
     select_html = ""
     for groups in element["group"]:
         
 
-        select_html  += """
-        <option value="{}">{}</option>
-        """.format(groups["value"]
+        select_html  += """<option value="{}">{}</option>""".format(groups["value"]
                    ,groups["caption"])
 
-    final_select = """{}<select name="{}" id="{}">{}</select><br/><br/>""".format(slabel_html,element["ename"],remove(groups["caption"]),select_html)
+    final_select = """
+                {}
+                <select name="{}" id="{}">
+                    {}
+                </select><br/><br/>""".format(slabel_html,element["ename"],remove(groups["caption"]),select_html)
     return final_select
 
 def generate_radio(element):
-    label_html = """ <label>{}</label>""".format(element["caption"])
+    label_html = """<label>{}</label>""".format(element["caption"])
     radio_html = ""
     for groups in element["group"]:
 
         radio_html += """
-        <input type="radio" name="{}" id="{}" value="{}"/>
-        <label>{}</label><br/>
-        """.format(element["ename"],groups["caption"],groups["value"], groups["caption"])
-    final_radio = """ {}<br/>{}<br/>""".format(label_html,radio_html)
+                <input type="radio" name="{}" id="{}" value="{}"/>
+                <label>{}</label><br/>""".format(element["ename"],groups["caption"],groups["value"], groups["caption"])
+    final_radio = """
+                {}<br/>
+                {}<br/>""".format(label_html,radio_html)
     return final_radio
 
 def generate_submit_reset(element, input_type):
 
     submit_html = """ 
-    <input type="{}" name="{}" id="{}"value="{}"/>
+                <input type="{}" name="{}" id="{}"value="{}"/>
     """.format(input_type, element["ename"], element["caption"], element["caption"])
     return submit_html
 
 def generate_multi(element):
-    mlabel_html = """ <label>{}</label>""".format(element["caption"])
+    mlabel_html = """<label>{}</label>""".format(element["caption"])
     multi_html = ""
     for groups in element["group"]:
 
         multi_html += """
-        <option value="{}">{}</option><br/>
+                    <option value="{}">{}</option><br/>
         """.format(groups["value"], groups["caption"])
-    final_multiselect = """ {}<select name="{}" id="{}" size= "{}" multiple>{}</select><br/><br/> """.format(mlabel_html,element["ename"],element["ename"],element["size"],multi_html)
+    final_multiselect = """ 
+                {}
+                <select name="{}" id="{}" size= "{}" multiple>
+                    {}
+                </select><br/><br/> """.format(mlabel_html,element["ename"],element["ename"],element["size"],multi_html)
     return final_multiselect
 
 def remove(space):
