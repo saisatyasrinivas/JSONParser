@@ -4,6 +4,7 @@ import json
 from src import create_html
 from src import create_js
 from src import create_sql
+from src import create_API
 
 def main():
     if len(sys.argv) != 2:
@@ -25,6 +26,7 @@ def main():
     # Step 3: MYSQL Script (creating the table)
     create_sql.generate_sql(json_data)
     # Step 4: Restful API ( 2 endpoints)
+    create_API.generate_api(json_data)
     # Step 5: Create HTML from displaying the data
         # Write the json and send to generate_html function  and file name
 
