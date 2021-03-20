@@ -1,4 +1,4 @@
-def generate_html(json_data):
+def generate_html(json_data, display=False):
     html = ""
     for element in json_data["elements"]:
         isEtype = "etype" in element
@@ -17,6 +17,10 @@ def generate_html(json_data):
         elif isEtype and element["etype"] == "reset":
             html += generate_submit_reset(element, "reset")
 
+    form_id = json_data["name"]
+    if display:
+        form_id += '_display'
+    
     finished_html =  """
         <html>
             <head>
@@ -33,9 +37,9 @@ def generate_html(json_data):
                     </div>
                 </body>
         </html>
-    """.format(json_data["name"],json_data["name"],json_data["caption"],html)
+    """.format(json_data["name"],form_id,json_data["caption"],html)
     
-    with open('./{}.html'.format(json_data["name"]), "w") as final_html:
+    with open('./{}.html'.format(form_id), "w") as final_html:
         final_html.write(finished_html)
 
 

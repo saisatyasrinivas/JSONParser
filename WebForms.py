@@ -28,6 +28,18 @@ def main():
     # Step 4: Restful API ( 2 endpoints)
     create_API.generate_api(json_data)
     # Step 5: Create HTML from displaying the data
+    json_data_display = {
+        'name': json_data["name"],
+        'caption': '{} form data'.format(json_data["name"]),
+        'elements':[
+            {
+            "etype": "submit",
+            "ename": "submit",
+            "caption": "Get data from database"
+            }
+        ]
+    }
+    create_html.generate_html(json_data_display, True)
         # Write the json and send to generate_html function  and file name
 
 
