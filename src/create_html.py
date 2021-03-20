@@ -23,12 +23,14 @@ def generate_html(json_data):
                 <script defer src="./{}.js"></script>
             </head>
                 <body>
-                    <form id="{}">
-                        <div>
-                            <h1>{}</h1>
-                            {}
-                        </div>
-                    </form>
+                    <div id="webform">
+                        <form id="{}">
+                            <div>
+                                <h1>{}</h1>
+                                {}
+                            </div>
+                        </form>
+                    </div>
                 </body>
         </html>
     """.format(json_data["name"],json_data["name"],json_data["caption"],html)

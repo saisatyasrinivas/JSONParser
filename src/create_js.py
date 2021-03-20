@@ -7,7 +7,7 @@ def generate_jscript(json_data):
             validations_js += generate_validations(element)
 
     validations_js = get_boilerplate(validations_js)
-    final_js = import_js + validations_js + get_helper_functions()
+    final_js = import_js + validations_js + get_helper_functions() + get_sendData_function(json_data["backendURL"])
 
     with open('./{}.js'.format(json_data["name"]), "w") as f:
         f.write(final_js)
@@ -32,7 +32,7 @@ def generate_validations(element):
     validations_js += """
         if({0}){{
         setEmpty(messages,`error_${{{datamatch}.name}}`)
-        messages[`error_${{{datamatch}.name}}`] += '{datamatch} datatype error'
+        messages[`error_${{{datamatch}.name}}`] += '   {datamatch} datatype error'
     }}
 
     """.format(condition,datamatch=element["ename"])
@@ -42,6 +42,7 @@ def get_boilerplate(validations_js):
     return """
         form.addEventListener('submit', (e) => {{
     let messages = {{}}
+    let messages_dup = {{}}
     if(Object.keys(messages_dup).length > 0){{
         for(let error_key of Object.keys(messages_dup)){{
             document.getElementById(error_key).innerText = '';
@@ -58,6 +59,7 @@ def get_boilerplate(validations_js):
         messages_dup = messages;
     }}
     else{{
+        e.preventDefault()
         submitData()
     }}
     
@@ -74,3 +76,23 @@ def get_helper_functions():
 
 }}
     """
+
+def get_sendData_function(url):
+    return """
+            function submitData(){{
+    fetch('{}insert', {{
+        method: 'POST',
+        body: new FormData(form)
+    }})
+    .then(response => {{
+        if(response.status == 200){{
+            document.getElementById('webform').innerHTML = '<p>Success</p>'
+        }}
+        else{{
+            document.getElementById('webform').innerHTML = '<p>Error, contact It department</p>'
+        }}
+
+    }})
+    .catch(error => console.error('Error:', error))
+}}
+    """.format(url)
