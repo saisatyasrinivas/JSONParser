@@ -12,6 +12,9 @@ def generate_jscript(json_data):
     with open('./{}.js'.format(json_data["name"]), "w") as f:
         f.write(final_js)
 
+def generate_additional_js(json_data):
+    pass
+
 def generate_imports(element):
     import_js = """const {} = document.getElementById('{}')\n""".format(
         element["ename"],element["ename"])
@@ -31,55 +34,51 @@ def generate_validations(element):
 
     validations_js += """
         if({0}){{
-        setEmpty(messages,`error_${{{datamatch}.name}}`)
-        messages[`error_${{{datamatch}.name}}`] += '   {datamatch} datatype error'
-    }}
-
+            setEmpty(messages,`error_${{{datamatch}.name}}`)
+            messages[`error_${{{datamatch}.name}}`] += '   {datamatch} datatype error'
+        }}
     """.format(condition,datamatch=element["ename"])
     return validations_js
 
 def get_boilerplate(validations_js):
     return """
-        form.addEventListener('submit', (e) => {{
-    let messages = {{}}
-    let messages_dup = {{}}
-    if(Object.keys(messages_dup).length > 0){{
-        for(let error_key of Object.keys(messages_dup)){{
-            document.getElementById(error_key).innerText = '';
+if(form){{
+    form.addEventListener('submit', (e) => {{
+        let messages = {{}}
+        let messages_dup = {{}}
+        if(Object.keys(messages_dup).length > 0){{
+            for(let error_key of Object.keys(messages_dup)){{
+                document.getElementById(error_key).innerText = '';
+            }}
         }}
-
-    }}
-    {}
-
-    if(Object.keys(messages).length > 0){{
-        e.preventDefault()      
-        for(let error_key of Object.keys(messages)){{
-            document.getElementById(error_key).innerText = messages[error_key];
+        {}
+        if(Object.keys(messages).length > 0){{
+            e.preventDefault()      
+            for(let error_key of Object.keys(messages)){{
+                document.getElementById(error_key).innerText = messages[error_key];
+            }}
+            messages_dup = messages;
         }}
-        messages_dup = messages;
-    }}
-    else{{
-        e.preventDefault()
-        submitData()
-    }}
-    
-
+        else{{
+            e.preventDefault()
+            submitData()
+        }}
     }})
+}}
     """.format(validations_js)
 
 def get_helper_functions():
     return """
-        function setEmpty(messages, msg_key){{
+function setEmpty(messages, msg_key){{
     if(!messages[msg_key]){{
         messages[msg_key] = ""
     }}
-
 }}
     """
 
 def get_sendData_function(url):
     return """
-            function submitData(){{
+function submitData(){{
     fetch('{}insert', {{
         method: 'POST',
         body: new FormData(form)
