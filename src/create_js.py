@@ -33,7 +33,7 @@ function displayData(){{
             col_str = '';
             cols = Object.keys(values[0])
             for(let col of cols){{
-                col_str += `<th>${{col}}</th>\n`
+                col_str += `<th style="border: 1px solid black;">${{col}}</th>\n`
             }}
             table_col = `<tr>${{col_str}}</tr>`
 
@@ -41,13 +41,13 @@ function displayData(){{
             for(let row of values){{
                 row_str = ''
                 for(let col1 of cols){{
-                    row_str += `<td>${{row[col1]}}</td>`
+                    row_str += `<td style="border: 1px solid black;">${{row[col1]}}</td>`
                 }}
                 table_col += `<tr>${{row_str}}</tr>`
             }}
 
             // append to the table_html
-            table_html += `<div><h3>${{table}}</h3><table>${{table_col}}</table></div>`
+            table_html += `<div><h3>${{table}}</h3><table style="border: 1px solid black;">${{table_col}}</table></div>`
 
         }}
         document.getElementById('webform').innerHTML = table_html
