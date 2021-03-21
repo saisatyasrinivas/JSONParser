@@ -131,7 +131,7 @@ def generate_radio(element):
 def generate_submit_reset(element, input_type):
 
     submit_html = """ 
-                <input type="{}" name="{}" id="{}"value="{}"/>
+                <input type="{}" name="{}" id="{}"value="{}"/><br/><br/>
     """.format(input_type, element["ename"], element["caption"], element["caption"])
     return submit_html
 

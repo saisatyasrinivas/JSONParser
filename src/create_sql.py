@@ -9,12 +9,11 @@ def generate_sql(json_data):
     col_list = []
     extra_tables = ""
     primary_key = get_primarykey(json_data)
-
+    table_names = [json_data["name"]]
     for element in json_data["elements"]:
-        if element["etype"] =="checkbox":
+        if element["etype"] in ["checkbox", "multiselectlist"]:
             extra_tables += get_table(element,primary_key, json_data["name"])
-        if element["etype"] == "multiselectlist":
-            extra_tables += get_table(element,primary_key, json_data["name"])
+            table_names.append('{}_{}'.format(element["ename"], json_data["name"]))
         if element["etype"] in ['textbox','selectlist','radiobutton']:
             col_list.append(get_col(element))
 
@@ -28,27 +27,15 @@ def generate_sql(json_data):
                     );
                     """.format(json_data["name"], ",".join(col_list))
     
-    boiler_plate = """drop database if exists {user};
-            create database {user};
-            use {user};
-            drop user if exists '{user}'@'localhost';
-            CREATE USER '{user}'@'localhost' IDENTIFIED BY '{}';
-            GRANT ALL PRIVILEGES ON * . * TO '{user}'@'localhost';
-            flush privileges;
-            SET FOREIGN_KEY_CHECKS = 0;
-            SET GROUP_CONCAT_MAX_LEN=32768;
-            SET @tables = NULL;
-            SELECT GROUP_CONCAT('`', table_name, '`') INTO @tables
-                FROM information_schema.tables
-                WHERE table_schema = (SELECT DATABASE());
-            SELECT IFNULL(@tables,'dummy') INTO @tables;
-            SET @tables = CONCAT('DROP TABLE IF EXISTS ', @tables);
-            PREPARE stmt FROM @tables;
-            EXECUTE stmt;
-            DEALLOCATE PREPARE stmt;
-            SET FOREIGN_KEY_CHECKS = 1;
-            {}
-            {}""".format(json_data["mysqlPWD"], general_table, extra_tables, user = json_data["mysqlUserID"])
+    drop_tables = "\n".join(["drop table if exists {};".format(table) for table in table_names])
+    
+    boiler_plate = """
+use {user};
+SET FOREIGN_KEY_CHECKS = 0;
+{}
+SET FOREIGN_KEY_CHECKS = 1;
+{}
+{}""".format(drop_tables, general_table, extra_tables, user = json_data["mysqlUserID"])
 
     with open('./{}.sql'.format(json_data["name"]), 'w') as sql_file:
         sql_file.write(boiler_plate)

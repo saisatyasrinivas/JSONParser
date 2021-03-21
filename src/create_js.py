@@ -47,14 +47,20 @@ function displayData(){{
             }}
 
             // append to the table_html
-            table_html += `<table>${{table_col}}</table>`
+            table_html += `<div><h3>${{table}}</h3><table>${{table_col}}</table></div>`
 
         }}
         document.getElementById('webform').innerHTML = table_html
     }})
-    .catch(error => console.error('Error:', error))
+    .catch(error => {{
+        document.getElementById('webform').innerHTML = '<h3>Database is empty, if not contact IT department</h3>'
+    }})
 }}
     """.format(json_data['name'], json_data['backendURL'])
+
+    with open('./{}.js'.format(json_data["name"]), 'a') as additional_js_file:
+        additional_js_file.write('\n\n')
+        additional_js_file.write(str(additional_js))
 
 def generate_imports(element):
     import_js = """const {} = document.getElementById('{}')\n""".format(

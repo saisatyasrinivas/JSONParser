@@ -83,7 +83,7 @@ def display():
         host="{}",
         database="{}",
         user="{}",
-        passwd="{}
+        passwd="{}"
     )
     print(request)
     cursor = db.cursor()
@@ -126,7 +126,7 @@ def prepare_get_data(tablename, col_names):
 
 def get_full_api(json_data, function_strings):
     return """
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import mysql.connector
 
