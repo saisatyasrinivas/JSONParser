@@ -58,7 +58,71 @@ def create_queries(form):
     return main_function
 
 def create_get_data(json_data):
-    return ""
+    tables_dict = dict()
+    
+    # table col names
+    primary_key_cols = []
+    primary_key = create_sql.get_primarykey(json_data)
+    for keyElement in primary_key:
+        primary_key_cols.append(keyElement["ename"])
+
+    main_cols = []
+    for element in json_data["elements"]:
+        if element["etype"] in ['textbox','selectlist','radiobutton']:
+            main_cols.append(element["ename"])
+        if element["etype"] in ['checkbox','multiselectlist']:
+            tables_dict['{}_{}'.format(element["ename"], json_data['name'])] = primary_key_cols + [element["ename"]]
+    tables_dict[json_data["name"]] = main_cols
+
+    table_list = list(tables_dict.keys())
+    tables = ",".join([ "'{}'".format(table) for table in table_list])
+    get_api_string = """
+@app.route('/webforms/display', methods=['GET'])
+def display():
+    db = mysql.connector.connect(
+        host="{}",
+        database="{}",
+        user="{}",
+        passwd="{}
+    )
+    print(request)
+    cursor = db.cursor()
+    data = dict()
+    tables_list = [{}]
+    for table in tables_list:
+        cursor.execute("select * from {{}}".format(table))
+        records = cursor.fetchall()
+        rows = []
+        for record in records:
+            rows.append(prepare_dict(table, record))
+        data[table]=rows
+    cursor.close()
+    db.close()
+    return jsonify(data)
+
+def prepare_dict(table_name, record):
+""".format(json_data['backendHost']
+    ,json_data["mysqlDB"]
+    ,json_data["mysqlUserID"]
+    ,json_data["mysqlPWD"]
+    ,tables)
+
+    for table in table_list:
+        get_api_string += prepare_get_data(table, tables_dict[table])
+
+    return get_api_string
+
+def prepare_get_data(tablename, col_names):
+    formated_col_names = []
+    for col_index in range(len(col_names)):
+        formated_col_names.append("""'{}': record[{}]""".format(col_names[col_index], col_index))
+    
+    formated_col_names = ','.join(formated_col_names)
+    final_string = """
+    if table_name == '{}':
+        return {{{}}}    
+""".format(tablename, formated_col_names)
+    return final_string
 
 def get_full_api(json_data, function_strings):
     return """
