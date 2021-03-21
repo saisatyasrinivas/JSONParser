@@ -13,7 +13,48 @@ def generate_jscript(json_data):
         f.write(final_js)
 
 def generate_additional_js(json_data):
-    pass
+    additional_js = """
+const form1= document.getElementById('{}_display')
+if(form1){{
+    form1.addEventListener('submit',(e) =>{{
+        e.preventDefault()
+        displayData()
+    }})
+}}
+
+function displayData(){{
+    fetch('{}display')
+    .then(response => response.json())
+    .then(data => {{
+        table_html = ''
+        for(let table of Object.keys(data)){{
+            let values = data[table]
+            // Create the columns
+            col_str = '';
+            cols = Object.keys(values[0])
+            for(let col of cols){{
+                col_str += `<th>${{col}}</th>\n`
+            }}
+            table_col = `<tr>${{col_str}}</tr>`
+
+            // Create the rows
+            for(let row of values){{
+                row_str = ''
+                for(let col1 of cols){{
+                    row_str += `<td>${{row[col1]}}</td>`
+                }}
+                table_col += `<tr>${{row_str}}</tr>`
+            }}
+
+            // append to the table_html
+            table_html += `<table>${{table_col}}</table>`
+
+        }}
+        document.getElementById('webform').innerHTML = table_html
+    }})
+    .catch(error => console.error('Error:', error))
+}}
+    """.format(json_data['name'], json_data['backendURL'])
 
 def generate_imports(element):
     import_js = """const {} = document.getElementById('{}')\n""".format(

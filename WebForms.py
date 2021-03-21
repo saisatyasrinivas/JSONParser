@@ -30,6 +30,7 @@ def main():
     # Step 5: Create HTML from displaying the data
     json_data_display = {
         'name': json_data["name"],
+        'backendURL' : json_data['backendURL'],
         'caption': '{} form data'.format(json_data["name"]),
         'elements':[
             {
@@ -40,6 +41,7 @@ def main():
         ]
     }
     create_html.generate_html(json_data_display, True)
+    create_js.generate_additional_js(json_data_display)
         # Write the json and send to generate_html function  and file name
 
 
