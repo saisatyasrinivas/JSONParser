@@ -76,8 +76,9 @@ def create_get_data(json_data):
 
     table_list = list(tables_dict.keys())
     tables = ",".join([ "'{}'".format(table) for table in table_list])
+    endpoint = json_data['backendURL'].split('/')[-2]
     get_api_string = """
-@app.route('/webforms/display', methods=['GET'])
+@app.route('/{}/display', methods=['GET'])
 def display():
     db = mysql.connector.connect(
         host="{}",
@@ -101,7 +102,8 @@ def display():
     return jsonify(data)
 
 def prepare_dict(table_name, record):
-""".format(json_data['backendHost']
+""".format(endpoint
+    ,json_data['backendHost']
     ,json_data["mysqlDB"]
     ,json_data["mysqlUserID"]
     ,json_data["mysqlPWD"]
@@ -125,6 +127,7 @@ def prepare_get_data(tablename, col_names):
     return final_string
 
 def get_full_api(json_data, function_strings):
+    endpoint = json_data['backendURL'].split('/')[-2]
     return """
 from flask import Flask, request, jsonify
 from flask_cors import CORS
@@ -135,7 +138,7 @@ app.config["DEBUG"] = True
 CORS(app)
 
 
-@app.route('/webforms/insert', methods=['GET','POST'])
+@app.route('/{}/insert', methods=['GET','POST'])
 def insert():
     status = insertData(request.form)
     return status
@@ -162,7 +165,8 @@ def insertData(form):
         db.close()
         return "unsuccessful",400
 {}
-app.run()""".format(json_data['backendHost']
+app.run()""".format(endpoint
+                    ,json_data['backendHost']
                     ,json_data['mysqlDB']
                     ,json_data['mysqlUserID']
                     ,json_data['mysqlPWD']

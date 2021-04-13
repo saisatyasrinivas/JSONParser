@@ -30,12 +30,21 @@ def generate_sql(json_data):
     drop_tables = "\n".join(["drop table if exists {};".format(table) for table in table_names])
     
     boiler_plate = """
+create DATABASE if not exists {user};
 use {user};
+CREATE USER IF NOT EXISTS '{}'@'localhost' IDENTIFIED BY '{}';
+GRANT ALL PRIVILEGES ON * . * TO '{}'@'localhost';
 SET FOREIGN_KEY_CHECKS = 0;
 {}
 SET FOREIGN_KEY_CHECKS = 1;
 {}
-{}""".format(drop_tables, general_table, extra_tables, user = json_data["mysqlUserID"])
+{}""".format(json_data["mysqlUserID"]
+            ,json_data["mysqlPWD"]
+            ,json_data["mysqlUserID"]
+            ,drop_tables
+            ,general_table
+            ,extra_tables
+            ,user = json_data["mysqlDB"])
 
     with open('./{}.sql'.format(json_data["name"]), 'w') as sql_file:
         sql_file.write(boiler_plate)
